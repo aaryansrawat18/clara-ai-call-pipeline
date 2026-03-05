@@ -1,0 +1,43 @@
+DEMO CALL TRANSCRIPT — Hartfield & Associates Law Firm
+Date: 2024-11-17
+Participants: Lisa (Clara Rep), James Hartfield (Managing Partner)
+
+[00:00] Lisa: Good afternoon, Mr. Hartfield. I'm Lisa from Clara. Thank you for your interest in our AI phone solution for your law firm.
+
+[00:06] James: Thank you, Lisa. We're Hartfield & Associates, a mid-size law firm in Chicago. Our office is at 233 South Wacker Drive, Suite 4400, Chicago, IL 60606. We handle a high volume of calls and need something reliable.
+
+[00:20] Lisa: Absolutely. Let me learn about your practice. What are your office hours?
+
+[00:24] James: Monday through Friday, 9 AM to 6 PM, Central Time. We're closed weekends, though partners are sometimes reachable for urgent matters.
+
+[00:34] Lisa: What areas of law does your firm practice?
+
+[00:37] James: Personal injury, medical malpractice, workers' compensation, employment law, civil litigation, and we have a small estate planning division. Personal injury is our bread and butter — about 60% of our cases.
+
+[00:52] Lisa: What would constitute an urgent or emergency call for your firm?
+
+[00:56] James: An existing client who's been in a serious accident and needs immediate legal guidance, a client who's been arrested or detained, court-related emergencies like missed filing deadlines or emergency injunctions, and any situation where a statute of limitations is about to expire — though that last one is rare.
+
+[01:18] Lisa: How should those be routed?
+
+[01:20] James: During business hours, transfer to our intake coordinator, Jessica, at extension 205. If Jessica doesn't answer within 30 seconds, transfer to the main reception at extension 200. After hours, for genuine emergencies, call my cell first. If I don't pick up, try partner Rachel Green — she's our secondary contact. If neither answers, take the caller's information and assure them an attorney will call back within one hour. Emphasize we take their matter seriously.
+
+[01:52] Lisa: And routine calls during business hours?
+
+[01:55] James: New client inquiries go to Jessica at extension 205 for intake screening. Existing client calls go to extension 200, our main reception, and they'll route to the appropriate attorney. Billing questions go to extension 210, our accounts department. If any line is busy, take a message and promise a callback within 4 business hours.
+
+[02:18] Lisa: After-hours non-urgent calls?
+
+[02:20] James: Take a message. Inform them our office will return their call the next business day. For potential new clients, try to capture their name, contact info, a brief description of their legal matter, and how they heard about us. That referral source tracking is important for us.
+
+[02:38] Lisa: Any case management software?
+
+[02:40] James: We use Clio for case management. No integration needed right now, but in the future, it would be great if new intake calls could automatically create a lead in Clio.
+
+[02:52] Lisa: Greeting preferences?
+
+[02:54] James: Something professional. "Thank you for calling Hartfield and Associates. How may I direct your call?" And closing: "Thank you for contacting Hartfield and Associates. We look forward to assisting you."
+
+[03:05] Lisa: Very clear. I'll prepare the agent configuration draft. We'll finalize everything in the onboarding call.
+
+[03:10] James: Looking forward to it.

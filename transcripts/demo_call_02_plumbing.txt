@@ -1,0 +1,39 @@
+DEMO CALL TRANSCRIPT — QuickFix Plumbing Co.
+Date: 2024-11-16
+Participants: Mark (Clara Rep), Tom Rodriguez (Owner)
+
+[00:00] Mark: Hey Tom, thanks for taking the time. I'm Mark from Clara. You reached out about our AI receptionist for QuickFix Plumbing?
+
+[00:07] Tom: Yeah, that's right. We're a plumbing company based in Phoenix, Arizona. Our shop is at 8812 North 19th Avenue, Phoenix, AZ 85021. We get a ton of calls and my guys are always out on jobs, so we miss a lot.
+
+[00:20] Mark: I hear that a lot from service businesses. Walk me through your typical day — when are you available?
+
+[00:25] Tom: We operate Monday through Saturday, 7 AM to 6 PM, Mountain Standard Time. Arizona doesn't do daylight saving, so it's MST year-round. Sundays we're closed unless it's an emergency.
+
+[00:38] Mark: What services do you all provide?
+
+[00:40] Tom: Residential plumbing repairs, drain cleaning, water heater installation and repair, sewer line repair, leak detection, bathroom and kitchen remodeling plumbing, fixture installation, and emergency plumbing services. We also do commercial plumbing but that's a smaller part of the business.
+
+[00:58] Mark: Now the big question — what counts as a plumbing emergency?
+
+[01:02] Tom: A burst pipe, major water leak that's flooding a home, sewer backup into the house, no hot water in winter when it's a family with small kids or elderly, and gas line leaks — though we usually tell them to call the gas company first and then us. Oh, and a completely clogged main sewer line.
+
+[01:22] Mark: If someone calls with one of those, what should happen?
+
+[01:25] Tom: During business hours, patch them straight through to our dispatch line — that's the main office number. Maria, our dispatcher, handles scheduling. If Maria doesn't answer in 20 seconds, try my cell. I always have it on me. After hours, for emergencies, call me first. If I don't pick up in 4 rings, try Jake, my lead plumber. If neither of us answers, take the message and tell them we'll call back within 30 minutes. We have a guy on call every night.
+
+[01:55] Mark: What about regular calls — someone wanting to schedule a routine repair?
+
+[01:59] Tom: Business hours, try to transfer to Maria at the dispatch line. If she's busy, take a message — name, phone, address, and what the problem is. Tell them we'll call back same day. After hours, just take the message. We'll get back to them next business day by 9 AM.
+
+[02:18] Mark: Any software systems you use that we should know about?
+
+[02:21] Tom: We use ServiceTitan for dispatching and scheduling. We're not looking for integration right now, but maybe down the road. We also have a simple website with a booking form, but most people just call.
+
+[02:35] Mark: Any special greeting?
+
+[02:37] Tom: Keep it simple. "Thanks for calling QuickFix Plumbing, your reliable plumbing experts. How can I help you?" At the end, something like "Thanks for calling QuickFix. We'll take care of it!"
+
+[02:50] Mark: Perfect. I'll build out the draft agent and we'll go through it in the onboarding session.
+
+[02:55] Tom: Sounds good, Mark.

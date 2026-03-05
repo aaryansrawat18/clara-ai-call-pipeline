@@ -1,0 +1,45 @@
+ONBOARDING CALL TRANSCRIPT — Pawsitive Care Veterinary Clinic
+Date: 2024-11-25
+Participants: Sarah (Clara Rep), Dr. Amanda Foster (Clinic Owner)
+
+[00:00] Sarah: Dr. Foster, welcome back! Ready to finalize your AI phone agent?
+
+[00:04] Dr. Foster: Absolutely, Sarah. We've had some changes since the demo call.
+
+[00:08] Sarah: Let's go through them.
+
+[00:10] Dr. Foster: First, we're extending our weekday hours. New hours are 7 AM to 8 PM Monday through Friday. We added an evening shift. Saturdays stay the same, 8 to 4. We're dropping Sunday hours entirely — we found it wasn't cost-effective with the low volume.
+
+[00:26] Sarah: Noted. Services?
+
+[00:28] Dr. Foster: Add acupuncture and holistic veterinary care — Dr. Yang joined us and she specializes in that. Also add grooming services — we just opened a grooming suite. And remove behavioral consultations — we're referring those out to a specialist now.
+
+[00:44] Sarah: Emergency updates?
+
+[00:46] Dr. Foster: Yes, add a few. Porcupine quill injuries — very common here in Colorado and they need prompt removal. Also add dog fights with puncture wounds, because those get infected fast. And dystocia — that's difficulty during labor for pregnant pets. Time-critical.
+
+[01:05] Sarah: Important additions. Routing changes?
+
+[01:07] Dr. Foster: During hours, keep the triage nurse at extension 3 as primary, but increase the timeout to 20 seconds instead of 15. She might be with a patient. Also add a new routing option: for grooming calls specifically, transfer to extension 5 — that's the grooming desk. They handle their own scheduling.
+
+[01:28] Dr. Foster: After hours, update the emergency hospital referral. We switched partner hospitals. The new one is Front Range Emergency Vet, and their number is 303-555-0234. Remove the old Rocky Mountain number. Also, if the caller says their pet ingested something toxic, the AI should first tell them to call ASPCA Animal Poison Control at 888-426-4435 — there is a consultation fee for that service, warn them — and then give them the emergency vet number.
+
+[01:58] Sarah: That's really detailed. Non-emergency call changes?
+
+[02:00] Dr. Foster: When taking messages, also ask the pet's species, breed, and approximate weight. Helps our vets prepare. Update callback window to 2 hours instead of 3 — we've gotten more staff. For prescription refill requests, the AI should ask the pet's name, medication name, and remaining refill count if they know it.
+
+[02:22] Sarah: After-hours messages?
+
+[02:24] Dr. Foster: Same idea, but add: for food/product orders, let them know they can also order through our PetDesk app for faster processing. Give them the website: pawsitivecare.com/shop.
+
+[02:38] Sarah: Software changes?
+
+[02:40] Dr. Foster: We switched from Cornerstone to eVetPractice — it's cloud-based. PetDesk is still in use. No integration yet but eVetPractice has an API we'd love to explore later.
+
+[02:52] Sarah: Greeting?
+
+[02:54] Dr. Foster: Change to: "Thank you for calling Pawsitive Care Veterinary Clinic, Denver's home for compassionate pet care. How can we help you and your pet today?" And update the closing: "Thank you for choosing Pawsitive Care. Your pet's health is our passion!"
+
+[03:08] Sarah: Wonderful updates. Final spec coming your way within 24 hours.
+
+[03:12] Dr. Foster: Thanks Sarah, this is going to be great!

@@ -1,0 +1,45 @@
+DEMO CALL TRANSCRIPT — Bright Smile Dental
+Date: 2024-11-15
+Participants: Sarah (Clara Rep), Dr. Emily Chen (Practice Owner)
+
+[00:00] Sarah: Hi Dr. Chen, thank you for joining this demo. I'm Sarah from Clara. I understand you're looking for an AI phone answering solution for Bright Smile Dental?
+
+[00:08] Dr. Chen: Yes, exactly. We're a dental practice in downtown Austin, Texas. Our address is 4521 Congress Avenue, Suite 200, Austin, TX 78701. We've been losing calls after hours and during lunch breaks, and I want to make sure every patient gets answered.
+
+[00:22] Sarah: That makes perfect sense. Let me understand your operations. What are your business hours?
+
+[00:26] Dr. Chen: We're open Monday through Friday, 8 AM to 5 PM, Central Time. We close for lunch from 12 to 1 PM. On Saturdays, we're open 9 AM to 1 PM. Closed Sundays.
+
+[00:38] Sarah: Got it. And what services does your practice offer?
+
+[00:41] Dr. Chen: We do general dentistry, cosmetic dentistry, orthodontics, dental implants, teeth whitening, emergency dental care, pediatric dentistry, and periodontal treatments.
+
+[00:52] Sarah: Great variety. Now, let's talk about how you'd like calls handled. What would you consider a dental emergency?
+
+[00:58] Dr. Chen: A dental emergency would be severe tooth pain that's uncontrollable, a knocked-out tooth, a broken jaw, uncontrollable bleeding from the mouth, or a swollen face with fever — that could indicate an abscess. Those need immediate attention.
+
+[01:15] Sarah: And when someone calls with one of those emergencies, what should happen?
+
+[01:19] Dr. Chen: During business hours, transfer them directly to our front desk at extension 101. If the front desk doesn't pick up within 30 seconds, try my personal cell — it's the number on file. After hours, for true emergencies, call my cell phone first. If I don't answer in 3 rings, try Dr. Patel, our associate — he's the backup. If neither answers, instruct the patient to go to the nearest emergency room and we'll follow up first thing in the morning.
+
+[01:48] Sarah: Perfect. What about non-emergency calls during business hours?
+
+[01:52] Dr. Chen: Regular appointment requests, billing questions, insurance inquiries — those should all go to the front desk at extension 101. If they don't answer in 45 seconds, take a message with the patient's name, phone number, and reason for calling. We'll call back within 2 hours.
+
+[02:10] Sarah: And after-hours non-emergency calls?
+
+[02:13] Dr. Chen: Take a detailed message. Let them know we'll return their call the next business day by 10 AM. If they're a new patient, try to get their insurance information too if they have it.
+
+[02:25] Sarah: Are there any integrations we should know about? Any practice management software?
+
+[02:30] Dr. Chen: We use Dentrix for our practice management. Eventually I'd love the AI to be able to check appointment availability, but for now, just taking messages and routing calls is fine. Oh, and we also use Google Calendar for Dr. Patel's schedule.
+
+[02:45] Sarah: Understood. Any specific phrases or greetings you'd like the AI to use?
+
+[02:49] Dr. Chen: Yes, always start with "Thank you for calling Bright Smile Dental, where your smile is our priority. How may I help you today?" And always end with "Thank you for choosing Bright Smile Dental. Have a wonderful day."
+
+[03:05] Sarah: This is very helpful. I'll put together a draft configuration for your AI agent and we'll review it in our onboarding call. Any questions?
+
+[03:12] Dr. Chen: Not right now. Looking forward to seeing it!
+
+[03:15] Sarah: Great, talk soon!

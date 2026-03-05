@@ -1,0 +1,43 @@
+DEMO CALL TRANSCRIPT — Summit Heating & Cooling
+Date: 2024-11-19
+Participants: Mark (Clara Rep), Bill Patterson (Owner)
+
+[00:00] Mark: Bill, thanks for taking the call. I'm Mark from Clara. You're interested in AI phone answering for Summit Heating and Cooling?
+
+[00:06] Bill: That's right, Mark. We're an HVAC company here in Nashville, Tennessee. We're at 901 Woodland Street, Nashville, TN 37206. Between service calls, installations, and maintenance contracts, my office phone rings off the hook.
+
+[00:20] Mark: I totally get it. Let's design the perfect setup. What are your hours?
+
+[00:24] Bill: Monday through Friday, 7 AM to 7 PM, Central Time. Saturday 8 AM to 4 PM. Closed Sundays, but we have emergency service available 24/7 for our maintenance contract customers.
+
+[00:38] Mark: What services does Summit provide?
+
+[00:40] Bill: AC installation and repair, furnace installation and repair, heat pump systems, duct cleaning and repair, indoor air quality solutions, smart thermostat installation, preventive maintenance plans, commercial HVAC for small businesses, and 24/7 emergency repair for contract customers.
+
+[00:58] Mark: What's an HVAC emergency to you?
+
+[01:00] Bill: No heat when the temperature is below 40 degrees outside, no AC when it's above 95 degrees — especially if there are elderly people or infants in the home. Also, gas smell near a furnace — that's a "call 911 first, then call us" situation. Carbon monoxide detector going off, and complete system failure for our commercial contract customers during business hours.
+
+[01:25] Mark: Emergency routing preferences?
+
+[01:27] Bill: During business hours, transfer to dispatch at extension 2. If dispatch doesn't answer in 25 seconds, try my cell. After hours, here's the key: if they're a maintenance contract customer, call our on-call technician line. The number rotates weekly, but it's always the same line — I'll provide that. If they're NOT a contract customer, take their info and tell them our next-day service starts at 7 AM, but if it's a life-safety issue like gas or CO, tell them to call 911 immediately.
+
+[01:58] Mark: Got it. Regular calls?
+
+[02:00] Bill: During business hours, transfer to the office at extension 1. Rachel handles scheduling. If she's not available after 30 seconds, take a message — name, phone, address, what system they have if they know, and what's going on. Let them know we'll call back within 2 hours. For maintenance contract customers calling to schedule their seasonal tune-up, try to communicate that we'll get them scheduled within a week.
+
+[02:28] Mark: After-hours non-emergency?
+
+[02:30] Bill: Take a message. Confirm we'll call back next business day by 9 AM. If they mention they want to sign up for a maintenance plan, flag that as a priority callback — those leads are gold.
+
+[02:42] Mark: Software?
+
+[02:44] Bill: We use Housecall Pro for scheduling and dispatching. No integration needed yet. We also track leads in a simple spreadsheet right now.
+
+[02:55] Mark: Greeting preference?
+
+[02:57] Bill: "Thank you for calling Summit Heating and Cooling, keeping Nashville comfortable year-round. How can I help you today?" To close: "Thanks for calling Summit. Stay comfortable!"
+
+[03:08] Mark: Great info, Bill. I'll build the agent draft and see you at onboarding.
+
+[03:12] Bill: Appreciate it, Mark.

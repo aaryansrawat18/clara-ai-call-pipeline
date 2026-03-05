@@ -1,0 +1,47 @@
+ONBOARDING CALL TRANSCRIPT — Summit Heating & Cooling
+Date: 2024-11-26
+Participants: Mark (Clara Rep), Bill Patterson (Owner)
+
+[00:00] Mark: Bill, welcome to your onboarding session. Let's finalize the Summit Heating and Cooling AI agent.
+
+[00:05] Bill: Hey Mark. I've got a few changes based on talking to my team.
+
+[00:10] Mark: Fire away.
+
+[00:12] Bill: First, we're extending Friday hours. Fridays will now be 7 AM to 8 PM. People always need last-minute weekend prep work. The rest of the weekdays stay 7 to 7. Saturday stays 8 to 4.
+
+[00:25] Mark: Got it. Service updates?
+
+[00:27] Bill: Add geothermal system installation and mini-split ductless systems. Those are growing fast in our market. Also add attic insulation services — we partnered with an insulation company and we're reselling their work under our brand. Remove smart thermostat installation as a separate service — we'll bundle that with all new installations instead.
+
+[00:48] Mark: Makes sense. Emergency definition changes?
+
+[00:50] Bill: Add one: a complete AC failure when the homeowner has medical equipment that requires climate control — like CPAP machines or certain medications that need to stay cool. That should be treated as a medical-related emergency. Also, if it's a commercial customer and their walk-in cooler or freezer system fails, that's an emergency — they could lose thousands in inventory.
+
+[01:15] Mark: Those are good edge cases. Routing?
+
+[01:17] Bill: Biggest change: we now have a dedicated after-hours dispatcher, Jenny. She's on from 7 PM to 7 AM weekdays and all day Sunday. So after hours, try Jenny's line first instead of the on-call tech. She'll coordinate with whoever is on call. If Jenny doesn't answer in 20 seconds, then try the on-call tech line, then me as last resort.
+
+[01:40] Mark: What about the maintenance contract customer distinction?
+
+[01:42] Bill: Keep it, but simplify. After hours, all calls go to Jenny. She'll check if they're a contract customer in our system. The AI doesn't need to make that distinction anymore — just tell them all that we have after-hours service and transfer to Jenny.
+
+[01:58] Mark: That simplifies things. Non-emergency?
+
+[02:00] Bill: For routine calls, add a question: ask them if they're interested in our seasonal maintenance plan if they don't already have one. Like a soft upsell. "Would you like to hear about our seasonal maintenance plans that include priority scheduling and discounts?" If yes, flag it for our sales team. If no, proceed normally.
+
+[02:22] Mark: Love the upsell angle. After-hours non-emergency?
+
+[02:24] Bill: Callback time stays next business day by 9 AM. But add: if they mention a brand-new installation inquiry and the estimate would be over $5,000 — like a full system replacement — flag that as a priority callback too. Those are big-ticket leads.
+
+[02:40] Mark: Software updates?
+
+[02:42] Bill: We migrated from Housecall Pro to FieldEdge. It does dispatching and CRM in one. Still no integration, but FieldEdge does have an API, so maybe in the future. Also, we now use Google Business Profile for reviews, so if a customer calls and sounds happy, the AI should mention: "If you've had a great experience, we'd love a review on Google!"
+
+[03:02] Mark: Nice touch. Greeting update?
+
+[03:04] Bill: Change to: "Thank you for calling Summit Heating and Cooling, Nashville's number one choice for home comfort. How can we help you today?" Closing: "Thanks for choosing Summit. Stay comfortable all year round!"
+
+[03:18] Mark: Great updates, Bill. Updated spec within 24 hours.
+
+[03:22] Bill: Perfect, Mark. Thanks for making this easy.

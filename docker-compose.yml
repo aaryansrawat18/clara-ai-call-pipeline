@@ -1,0 +1,89 @@
+# ────────────────────────────────────────────────────────────────
+# Clara Answers - Docker Compose
+# Spins up: n8n, Ollama, FastAPI backend, React frontend
+# All services are FREE / open-source
+# ────────────────────────────────────────────────────────────────
+
+services:
+  # ── n8n Workflow Engine (free, self-hosted) ──
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: clara-n8n
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=false
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - GENERIC_TIMEZONE=America/Chicago
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./outputs:/data/outputs
+      - ./transcripts:/data/transcripts
+    restart: unless-stopped
+
+  # ── Ollama Local LLM (free, runs locally) ──
+  ollama:
+    image: ollama/ollama:latest
+    container_name: clara-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    # GPU support (uncomment if you have NVIDIA GPU):
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+  # ── Pull Llama model on first run ──
+  ollama-pull:
+    image: ollama/ollama:latest
+    container_name: clara-ollama-pull
+    depends_on:
+      - ollama
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        sleep 10
+        ollama pull llama3.2:3b
+    environment:
+      - OLLAMA_HOST=ollama:11434
+    restart: "no"
+
+  # ── FastAPI Dashboard Backend ──
+  backend:
+    build:
+      context: ./dashboard/backend
+      dockerfile: Dockerfile
+    container_name: clara-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - OUTPUTS_DIR=/data/outputs/accounts
+    volumes:
+      - ./outputs:/data/outputs
+    depends_on:
+      - n8n
+    restart: unless-stopped
+
+  # ── React Dashboard Frontend ──
+  frontend:
+    build:
+      context: ./dashboard/frontend
+      dockerfile: Dockerfile
+    container_name: clara-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  n8n_data:
+  ollama_data:

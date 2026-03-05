@@ -1,0 +1,39 @@
+ONBOARDING CALL TRANSCRIPT — Bright Smile Dental
+Date: 2024-11-22
+Participants: Sarah (Clara Rep), Dr. Emily Chen (Practice Owner)
+
+[00:00] Sarah: Hi Dr. Chen, welcome to your onboarding session! I've put together the initial AI agent draft based on our demo call. Let's walk through it and refine.
+
+[00:08] Dr. Chen: Great, I've been looking forward to this. I actually have some updates since our last call.
+
+[00:13] Sarah: Perfect, let's hear them.
+
+[00:15] Dr. Chen: First, we've extended our Saturday hours. We're now open 8 AM to 3 PM on Saturdays instead of 9 to 1. We hired a new hygienist, so we can take more weekend patients.
+
+[00:27] Sarah: Good to know, I'll update that. Anything else?
+
+[00:30] Dr. Chen: Yes, I forgot to mention — we also offer Invisalign consultations and TMJ treatment. Add those to our services list. Oh, and we just started offering sedation dentistry for anxious patients.
+
+[00:42] Sarah: Got it. Any changes to emergency handling?
+
+[00:44] Dr. Chen: Actually, yes. I want to add a third backup for after-hours emergencies. After trying me and Dr. Patel, if neither answers, try our new associate Dr. Kim — she's agreed to be on the emergency rotation. Only after all three don't answer should the AI direct to the ER.
+
+[01:02] Sarah: Smart to have that extra coverage. What about the greeting?
+
+[01:05] Dr. Chen: Let's update it slightly. "Thank you for calling Bright Smile Dental, Austin's premier family dentistry practice. How may I assist you today?" I want to emphasize the family-friendly angle.
+
+[01:18] Sarah: Love it. Any changes to call transfer timeouts?
+
+[01:21] Dr. Chen: Yes, reduce the front desk transfer timeout from 45 seconds to 30 seconds for non-emergency calls. Our analysis shows if they haven't picked up by then, they won't. Also, instead of promising a callback within 2 hours, make it 1 hour. We've improved our callback process.
+
+[01:38] Sarah: That's great for patient experience. Integration updates?
+
+[01:41] Dr. Chen: We've switched from Dentrix to Open Dental as our practice management system. Same situation though — no integration needed yet, just aware of it for the future. We still use Google Calendar for Dr. Patel.
+
+[01:55] Sarah: Any other notes?
+
+[01:57] Dr. Chen: One more thing — for Spanish-speaking callers, we want the AI to say "Para español, por favor quédese en la línea" and then take a message in English noting they prefer Spanish. Maria on our team speaks Spanish and will call them back.
+
+[02:15] Sarah: Excellent touch. We'll incorporate bilingual awareness. I'll update the agent spec and you'll have the finalized version within 24 hours.
+
+[02:22] Dr. Chen: Thank you, Sarah. This has been very thorough.

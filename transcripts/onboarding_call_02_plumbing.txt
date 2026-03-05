@@ -1,0 +1,43 @@
+ONBOARDING CALL TRANSCRIPT — QuickFix Plumbing Co.
+Date: 2024-11-23
+Participants: Mark (Clara Rep), Tom Rodriguez (Owner)
+
+[00:00] Mark: Tom, good to see you again. Let's finalize your AI receptionist configuration.
+
+[00:05] Tom: Hey Mark. Yeah, I've been thinking about a few changes since our demo call.
+
+[00:10] Mark: Let's hear them.
+
+[00:12] Tom: First, I want to add Sunday hours. We're going to do 9 AM to 2 PM on Sundays starting next month. Emergency calls only on Sundays, no routine bookings.
+
+[00:23] Mark: Got it. Emergency-only Sundays. Any service updates?
+
+[00:26] Tom: Yeah, we're adding two new services: tankless water heater installation and whole-house water filtration systems. Big demand for both right now. Remove the commercial plumbing for now — we're pausing that to focus on residential.
+
+[00:40] Mark: Changes to emergency definitions?
+
+[00:42] Tom: Add one more — a water heater leaking gas. That should be treated as top priority, same as a gas line leak. Tell them to shut off the gas valve if they can, open windows, and evacuate, then call us. Also, I want "frozen or burst pipes in winter" added since it gets cold enough here sometimes.
+
+[01:00] Mark: Emergency routing updates?
+
+[01:02] Tom: After hours, I want to change the protocol. Instead of trying me first, try the on-call tech first — that dedicated line I gave you. If they don't answer in 3 rings, THEN try me. I was getting too many calls at 2 AM for things my guys can handle. Oh, and add a new backup — my brother Steve, he's a licensed plumber. He's the last resort before taking a message.
+
+[01:28] Mark: Makes sense. Non-emergency changes?
+
+[01:30] Tom: When taking messages during business hours, also ask what part of the valley they're in — north Phoenix, south Phoenix, east or west side. Helps Maria dispatch efficiently. And update the callback time: we'll call back within 1 hour, not same day. We've gotten faster.
+
+[01:48] Mark: After-hours callbacks?
+
+[01:50] Tom: Still next business day, but by 8 AM instead of 9 AM. We're starting the day earlier now.
+
+[01:58] Mark: Any integration changes?
+
+[02:00] Tom: We actually switched from ServiceTitan to Jobber. Cheaper and fits our size better. Still no AI integration yet, but maybe next quarter.
+
+[02:12] Mark: Greeting updates?
+
+[02:14] Tom: Yeah, change it to: "You've reached QuickFix Plumbing, Phoenix's most trusted plumbing experts. How can we help you today?" The old one was fine but this one sells better. Keep the same closing.
+
+[02:28] Mark: Perfect. I'll update everything. You'll have the final spec within 24 hours.
+
+[02:33] Tom: Thanks Mark. Good working with you.

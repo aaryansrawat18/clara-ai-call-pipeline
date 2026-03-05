@@ -1,0 +1,43 @@
+DEMO CALL TRANSCRIPT — Pawsitive Care Veterinary Clinic
+Date: 2024-11-18
+Participants: Sarah (Clara Rep), Dr. Amanda Foster (Clinic Owner)
+
+[00:00] Sarah: Hi Dr. Foster! I'm Sarah from Clara. Thanks for scheduling this demo. Tell me about Pawsitive Care.
+
+[00:06] Dr. Foster: Hi Sarah! We're a full-service veterinary clinic in Denver, Colorado. We're located at 1750 Welton Street, Suite 100, Denver, CO 80202. We've been growing fast and our front desk team can't keep up with the call volume.
+
+[00:20] Sarah: Congratulations on the growth! Let's make sure no calls slip through. What are your clinic hours?
+
+[00:24] Dr. Foster: We're open Monday through Friday, 7:30 AM to 7 PM. Saturdays 8 AM to 4 PM. Sundays 10 AM to 2 PM — Sundays are limited to urgent care only. All Mountain Time.
+
+[00:38] Sarah: That's a wide range. What services do you offer?
+
+[00:41] Dr. Foster: Wellness exams, vaccinations, dental cleanings, spay and neuter surgeries, microchipping, diagnostic imaging — X-rays and ultrasound, in-house laboratory work, pharmacy, nutrition counseling, behavioral consultations, and emergency triage. We're not a 24-hour emergency hospital, but we do urgent care during our hours.
+
+[01:02] Sarah: What would you classify as a veterinary emergency?
+
+[01:05] Dr. Foster: An animal that's been hit by a car, difficulty breathing, uncontrollable bleeding, suspected poisoning or toxin ingestion — chocolate, antifreeze, rat poison — seizures lasting more than 2 minutes, bloat symptoms in large dogs which is really time-critical, and an animal that's collapsed or is unresponsive.
+
+[01:28] Sarah: How should emergency calls be handled?
+
+[01:30] Dr. Foster: During clinic hours, transfer immediately to our triage nurse at extension 3. If the triage nurse doesn't answer in 15 seconds, transfer to the front desk at extension 1 — they can grab the nearest vet. After hours, this is important — we are NOT a 24-hour facility. The AI must tell them to go to Rocky Mountain Veterinary Emergency at 303-555-0199. That's our partner emergency hospital. Also take their info so we can follow up next business day. If we're within 30 minutes of opening, they can also wait and come in right when we open.
+
+[02:05] Sarah: Very clear. Non-emergency calls during business hours?
+
+[02:08] Dr. Foster: Transfer to front desk at extension 1 for appointment scheduling, general questions, prescription refills, and food orders. If the front desk is busy — give it 40 seconds — take a message. Name, pet's name, phone number, and reason for calling. We'll call back within 3 hours.
+
+[02:28] Sarah: After-hours non-emergency?
+
+[02:30] Dr. Foster: Take a message with all details. Let them know we'll call back the next business day. For prescription refill requests, let them know those usually take 24 to 48 hours to process.
+
+[02:42] Sarah: Any clinic management software?
+
+[02:44] Dr. Foster: We use Cornerstone by IDEXX. I'd love integration eventually, especially for appointment booking, but right now just call handling is fine. We also use PetDesk for client communication, but that's separate.
+
+[02:58] Sarah: Greeting?
+
+[03:00] Dr. Foster: "Thank you for calling Pawsitive Care Veterinary Clinic. How can we help you and your furry friend today?" And to close: "Thank you for trusting Pawsitive Care with your pet's health!"
+
+[03:12] Sarah: Love it! I'll have the agent draft ready for our onboarding session.
+
+[03:16] Dr. Foster: Wonderful, thanks Sarah!

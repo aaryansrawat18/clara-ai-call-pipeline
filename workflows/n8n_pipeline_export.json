@@ -1,0 +1,406 @@
+{
+    "name": "Clara Answers - Call Processing Pipeline",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "clara/demo",
+                "responseMode": "lastNode",
+                "options": {}
+            },
+            "id": "webhook-demo",
+            "name": "Demo Call Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                100,
+                200
+            ],
+            "webhookId": "clara-demo-webhook"
+        },
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "clara/onboarding",
+                "responseMode": "lastNode",
+                "options": {}
+            },
+            "id": "webhook-onboarding",
+            "name": "Onboarding Call Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                100,
+                600
+            ],
+            "webhookId": "clara-onboarding-webhook"
+        },
+        {
+            "parameters": {
+                "functionCode": "// Pipeline A: Demo Call Processing\n// Extract transcript from webhook payload\nconst transcript = $input.first().json.transcript;\nconst filename = $input.first().json.filename || 'unknown';\n\nif (!transcript) {\n  throw new Error('No transcript provided in webhook payload');\n}\n\n// Generate account_id from transcript header\nlet companyName = 'unknown';\nconst headerMatch = transcript.match(/(?:TRANSCRIPT|CALL).*?—\\s*(.+)/);\nif (headerMatch) {\n  companyName = headerMatch[1].trim();\n}\nconst accountId = companyName.toLowerCase().replace(/[^a-z0-9\\s]/g, '').replace(/\\s+/g, '_');\n\nreturn [{\n  json: {\n    transcript: transcript,\n    filename: filename,\n    company_name: companyName,\n    account_id: accountId,\n    pipeline: 'demo',\n    timestamp: new Date().toISOString()\n  }\n}];"
+            },
+            "id": "parse-demo",
+            "name": "Parse Demo Transcript",
+            "type": "n8n-nodes-base.function",
+            "typeVersion": 1,
+            "position": [
+                320,
+                200
+            ]
+        },
+        {
+            "parameters": {
+                "functionCode": "// Pipeline B: Onboarding Call Processing\nconst transcript = $input.first().json.transcript;\nconst filename = $input.first().json.filename || 'unknown';\nconst accountId = $input.first().json.account_id;\n\nif (!transcript) {\n  throw new Error('No transcript provided in webhook payload');\n}\nif (!accountId) {\n  throw new Error('No account_id provided. Process demo call first.');\n}\n\nreturn [{\n  json: {\n    transcript: transcript,\n    filename: filename,\n    account_id: accountId,\n    pipeline: 'onboarding',\n    timestamp: new Date().toISOString()\n  }\n}];"
+            },
+            "id": "parse-onboarding",
+            "name": "Parse Onboarding Transcript",
+            "type": "n8n-nodes-base.function",
+            "typeVersion": 1,
+            "position": [
+                320,
+                600
+            ]
+        },
+        {
+            "parameters": {
+                "url": "http://host.docker.internal:11434/api/generate",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={{ JSON.stringify({ model: 'llama3.2:3b', prompt: 'You are an expert data extraction assistant. Analyze the following call transcript and extract a structured Account Memo in JSON format.\\n\\nTRANSCRIPT:\\n' + $json.transcript + '\\n\\nExtract these fields as JSON: account_id (from company name, lowercase with underscores), company_name, business_hours (days, start, end, timezone, exceptions), office_address, services_supported (list), emergency_definition (list), emergency_routing_rules (during_hours/after_hours with primary, fallback_chain, timeout_seconds, final_fallback), non_emergency_routing_rules, call_transfer_rules, integration_constraints, after_hours_flow_summary, office_hours_flow_summary, questions_or_unknowns, notes.\\n\\nCRITICAL: Output valid JSON only. Do NOT hallucinate. Flag missing info in questions_or_unknowns.', stream: false, format: 'json', options: { temperature: 0.1 } }) }}",
+                "options": {
+                    "timeout": 120000,
+                    "retry": {
+                        "maxRetries": 3,
+                        "retryInterval": 2000
+                    }
+                }
+            },
+            "id": "extract-memo-llm",
+            "name": "Extract Memo (Ollama LLM)",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 3,
+            "position": [
+                540,
+                200
+            ],
+            "retryOnFail": true,
+            "maxTries": 3,
+            "waitBetweenTries": 2000
+        },
+        {
+            "parameters": {
+                "url": "http://host.docker.internal:11434/api/generate",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={{ JSON.stringify({ model: 'llama3.2:3b', prompt: 'You are updating an existing Account Memo with information from an onboarding call.\\n\\nEXISTING MEMO:\\n' + JSON.stringify($json.existing_memo) + '\\n\\nONBOARDING TRANSCRIPT:\\n' + $json.transcript + '\\n\\nUpdate the memo with changes from the onboarding call. If new info contradicts old, use NEW. Add new items, remove deleted ones. Output complete updated JSON.', stream: false, format: 'json', options: { temperature: 0.1 } }) }}",
+                "options": {
+                    "timeout": 120000,
+                    "retry": {
+                        "maxRetries": 3,
+                        "retryInterval": 2000
+                    }
+                }
+            },
+            "id": "update-memo-llm",
+            "name": "Update Memo (Ollama LLM)",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 3,
+            "position": [
+                760,
+                600
+            ],
+            "retryOnFail": true,
+            "maxTries": 3,
+            "waitBetweenTries": 2000
+        },
+        {
+            "parameters": {
+                "functionCode": "// Parse LLM response for memo extraction\nconst response = $input.first().json;\nlet memo;\n\ntry {\n  // Ollama returns response in 'response' field\n  const rawResponse = response.response || response.body || JSON.stringify(response);\n  memo = typeof rawResponse === 'string' ? JSON.parse(rawResponse) : rawResponse;\n} catch (e) {\n  // Fallback: try to extract JSON from response\n  const text = response.response || '';\n  const match = text.match(/\\{[\\s\\S]*\\}/);\n  if (match) {\n    memo = JSON.parse(match[0]);\n  } else {\n    throw new Error('Failed to parse memo from LLM response: ' + e.message);\n  }\n}\n\n// Ensure required fields\nmemo.account_id = memo.account_id || $('Parse Demo Transcript').first().json.account_id;\nmemo.company_name = memo.company_name || $('Parse Demo Transcript').first().json.company_name;\n\nreturn [{ json: { memo: memo, account_id: memo.account_id, pipeline: 'demo' } }];"
+            },
+            "id": "parse-memo-response",
+            "name": "Parse Memo Response",
+            "type": "n8n-nodes-base.function",
+            "typeVersion": 1,
+            "position": [
+                760,
+                200
+            ]
+        },
+        {
+            "parameters": {
+                "url": "http://host.docker.internal:11434/api/generate",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={{ JSON.stringify({ model: 'llama3.2:3b', prompt: 'Generate a Retell AI Agent Spec from this Account Memo. Include: agent_name, voice_style, system_prompt (detailed with greeting, emergency/non-emergency flows, transfer protocols, closing - NEVER mention function calls to callers), key_variables, tool_invocation_placeholders, call_transfer_protocol, fallback_protocol, version: v1.\\n\\nACCOUNT MEMO:\\n' + JSON.stringify($json.memo) + '\\n\\nOutput valid JSON only.', stream: false, format: 'json', options: { temperature: 0.1 } }) }}",
+                "options": {
+                    "timeout": 120000
+                }
+            },
+            "id": "generate-spec-llm",
+            "name": "Generate Agent Spec (Ollama)",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 3,
+            "position": [
+                980,
+                200
+            ],
+            "retryOnFail": true,
+            "maxTries": 3,
+            "waitBetweenTries": 2000
+        },
+        {
+            "parameters": {
+                "functionCode": "// Parse agent spec response\nconst response = $input.first().json;\nlet spec;\n\ntry {\n  const rawResponse = response.response || response.body || JSON.stringify(response);\n  spec = typeof rawResponse === 'string' ? JSON.parse(rawResponse) : rawResponse;\n} catch (e) {\n  const text = response.response || '';\n  const match = text.match(/\\{[\\s\\S]*\\}/);\n  if (match) {\n    spec = JSON.parse(match[0]);\n  } else {\n    throw new Error('Failed to parse spec: ' + e.message);\n  }\n}\n\nspec.version = spec.version || 'v1';\nconst memo = $('Parse Memo Response').first().json.memo;\nconst accountId = memo.account_id;\n\nreturn [{\n  json: {\n    memo: memo,\n    spec: spec,\n    account_id: accountId,\n    pipeline: 'demo'\n  }\n}];"
+            },
+            "id": "parse-spec-response",
+            "name": "Parse Spec Response",
+            "type": "n8n-nodes-base.function",
+            "typeVersion": 1,
+            "position": [
+                1200,
+                200
+            ]
+        },
+        {
+            "parameters": {
+                "functionCode": "// Save v1 artifacts to local filesystem\nconst fs = require('fs');\nconst path = require('path');\n\nconst data = $input.first().json;\nconst accountId = data.account_id;\n\n// Output directory (mounted volume)\nconst baseDir = '/data/outputs/accounts';\nconst v1Dir = path.join(baseDir, accountId, 'v1');\n\n// Create directories\nfs.mkdirSync(v1Dir, { recursive: true });\n\n// Save memo\nfs.writeFileSync(\n  path.join(v1Dir, 'memo.json'),\n  JSON.stringify(data.memo, null, 2),\n  'utf8'\n);\n\n// Save agent spec\nfs.writeFileSync(\n  path.join(v1Dir, 'agent_spec.json'),\n  JSON.stringify(data.spec, null, 2),\n  'utf8'\n);\n\n// Save task tracker\nconst task = {\n  task_id: require('crypto').createHash('md5').update(accountId + '_demo').digest('hex').substring(0, 8),\n  account_id: accountId,\n  company_name: data.memo.company_name,\n  phase: 'demo',\n  status: 'completed',\n  created_at: new Date().toISOString(),\n  steps_completed: ['transcript_received', 'memo_extracted', 'agent_spec_generated', 'artifacts_saved']\n};\n\nfs.writeFileSync(\n  path.join(baseDir, accountId, 'task_demo.json'),\n  JSON.stringify(task, null, 2),\n  'utf8'\n);\n\nreturn [{\n  json: {\n    success: true,\n    account_id: accountId,\n    company_name: data.memo.company_name,\n    pipeline: 'demo',\n    output_path: v1Dir,\n    message: `Demo call processed successfully for ${data.memo.company_name}`\n  }\n}];"
+            },
+            "id": "save-v1",
+            "name": "Save v1 Artifacts",
+            "type": "n8n-nodes-base.function",
+            "typeVersion": 1,
+            "position": [
+                1420,
+                200
+            ]
+        },
+        {
+            "parameters": {
+                "functionCode": "// Load existing v1 memo for onboarding update\nconst fs = require('fs');\nconst path = require('path');\n\nconst accountId = $input.first().json.account_id;\nconst transcript = $input.first().json.transcript;\n\nconst baseDir = '/data/outputs/accounts';\nconst v1MemoPath = path.join(baseDir, accountId, 'v1', 'memo.json');\nconst v1SpecPath = path.join(baseDir, accountId, 'v1', 'agent_spec.json');\n\nif (!fs.existsSync(v1MemoPath)) {\n  throw new Error(`No v1 data found for account ${accountId}. Process demo call first.`);\n}\n\nconst existingMemo = JSON.parse(fs.readFileSync(v1MemoPath, 'utf8'));\nconst existingSpec = JSON.parse(fs.readFileSync(v1SpecPath, 'utf8'));\n\nreturn [{\n  json: {\n    existing_memo: existingMemo,\n    existing_spec: existingSpec,\n    transcript: transcript,\n    account_id: accountId\n  }\n}];"
+            },
+            "id": "load-v1",
+            "name": "Load Existing v1 Data",
+            "type": "n8n-nodes-base.function",
+            "typeVersion": 1,
+            "position": [
+                540,
+                600
+            ]
+        },
+        {
+            "parameters": {
+                "functionCode": "// Parse updated memo and generate v2 spec request\nconst response = $input.first().json;\nlet updatedMemo;\n\ntry {\n  const rawResponse = response.response || JSON.stringify(response);\n  updatedMemo = typeof rawResponse === 'string' ? JSON.parse(rawResponse) : rawResponse;\n} catch (e) {\n  const text = response.response || '';\n  const match = text.match(/\\{[\\s\\S]*\\}/);\n  if (match) {\n    updatedMemo = JSON.parse(match[0]);\n  } else {\n    throw new Error('Failed to parse updated memo: ' + e.message);\n  }\n}\n\nconst accountId = $('Parse Onboarding Transcript').first().json.account_id;\nupdatedMemo.account_id = accountId;\n\nreturn [{\n  json: {\n    updated_memo: updatedMemo,\n    account_id: accountId,\n    existing_memo: $('Load Existing v1 Data').first().json.existing_memo,\n    existing_spec: $('Load Existing v1 Data').first().json.existing_spec\n  }\n}];"
+            },
+            "id": "parse-updated-memo",
+            "name": "Parse Updated Memo",
+            "type": "n8n-nodes-base.function",
+            "typeVersion": 1,
+            "position": [
+                980,
+                600
+            ]
+        },
+        {
+            "parameters": {
+                "url": "http://host.docker.internal:11434/api/generate",
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={{ JSON.stringify({ model: 'llama3.2:3b', prompt: 'Generate an updated Retell AI Agent Spec (v2) from this updated Account Memo. Include all fields: agent_name, voice_style, system_prompt (with updated flows), key_variables, tool_invocation_placeholders, call_transfer_protocol, fallback_protocol, version: v2.\\n\\nUPDATED MEMO:\\n' + JSON.stringify($json.updated_memo) + '\\n\\nOutput valid JSON only.', stream: false, format: 'json', options: { temperature: 0.1 } }) }}",
+                "options": {
+                    "timeout": 120000
+                }
+            },
+            "id": "generate-spec-v2",
+            "name": "Generate Agent Spec v2 (Ollama)",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 3,
+            "position": [
+                1200,
+                600
+            ],
+            "retryOnFail": true,
+            "maxTries": 3,
+            "waitBetweenTries": 2000
+        },
+        {
+            "parameters": {
+                "functionCode": "// Parse v2 spec, generate changelog, and save everything\nconst fs = require('fs');\nconst path = require('path');\n\nconst response = $input.first().json;\nlet updatedSpec;\n\ntry {\n  const rawResponse = response.response || JSON.stringify(response);\n  updatedSpec = typeof rawResponse === 'string' ? JSON.parse(rawResponse) : rawResponse;\n} catch (e) {\n  const text = response.response || '';\n  const match = text.match(/\\{[\\s\\S]*\\}/);\n  if (match) {\n    updatedSpec = JSON.parse(match[0]);\n  } else {\n    throw new Error('Failed to parse v2 spec: ' + e.message);\n  }\n}\n\nupdatedSpec.version = 'v2';\n\nconst prevData = $('Parse Updated Memo').first().json;\nconst accountId = prevData.account_id;\nconst updatedMemo = prevData.updated_memo;\nconst existingMemo = prevData.existing_memo;\nconst existingSpec = prevData.existing_spec;\n\n// Generate changelog\nlet changelog = `# Changelog: ${updatedMemo.company_name || accountId}\\n`;\nchangelog += `**Generated**: ${new Date().toISOString()}\\n`;\nchangelog += `**Account ID**: ${accountId}\\n\\n`;\nchangelog += `## Account Memo Changes\\n\\n`;\n\nconst fieldsToCompare = [\n  ['services_supported', 'Services'],\n  ['emergency_definition', 'Emergency Definitions'],\n  ['business_hours', 'Business Hours'],\n  ['integration_constraints', 'Integrations'],\n  ['notes', 'Notes']\n];\n\nlet hasChanges = false;\nfor (const [field, label] of fieldsToCompare) {\n  const v1 = JSON.stringify(existingMemo[field] || '');\n  const v2 = JSON.stringify(updatedMemo[field] || '');\n  if (v1 !== v2) {\n    hasChanges = true;\n    changelog += `### ${label}\\n`;\n    changelog += `- **v1**: ${v1}\\n`;\n    changelog += `- **v2**: ${v2}\\n\\n`;\n  }\n}\n\nif (!hasChanges) {\n  changelog += '_No field-level changes detected._\\n\\n';\n}\n\nchangelog += `## Agent Spec Changes\\n\\n`;\nchangelog += `*Version upgraded from v1 → v2*\\n`;\n\n// Save v2 artifacts\nconst baseDir = '/data/outputs/accounts';\nconst v2Dir = path.join(baseDir, accountId, 'v2');\nfs.mkdirSync(v2Dir, { recursive: true });\n\nfs.writeFileSync(path.join(v2Dir, 'memo.json'), JSON.stringify(updatedMemo, null, 2), 'utf8');\nfs.writeFileSync(path.join(v2Dir, 'agent_spec.json'), JSON.stringify(updatedSpec, null, 2), 'utf8');\nfs.writeFileSync(path.join(baseDir, accountId, 'changelog.md'), changelog, 'utf8');\n\n// Task tracker\nconst task = {\n  task_id: require('crypto').createHash('md5').update(accountId + '_onboarding').digest('hex').substring(0, 8),\n  account_id: accountId,\n  company_name: updatedMemo.company_name,\n  phase: 'onboarding',\n  status: 'completed',\n  created_at: new Date().toISOString(),\n  steps_completed: ['transcript_received', 'v1_loaded', 'memo_updated', 'spec_v2_generated', 'changelog_created', 'artifacts_saved']\n};\nfs.writeFileSync(path.join(baseDir, accountId, 'task_onboarding.json'), JSON.stringify(task, null, 2), 'utf8');\n\nreturn [{\n  json: {\n    success: true,\n    account_id: accountId,\n    company_name: updatedMemo.company_name,\n    pipeline: 'onboarding',\n    message: `Onboarding processed successfully for ${updatedMemo.company_name}`\n  }\n}];"
+            },
+            "id": "save-v2-changelog",
+            "name": "Save v2 + Changelog",
+            "type": "n8n-nodes-base.function",
+            "typeVersion": 1,
+            "position": [
+                1420,
+                600
+            ]
+        },
+        {
+            "parameters": {
+                "functionCode": "// Error handler — log and return structured error\nconst error = $input.first().json;\nconst errorMessage = error.message || error.error || 'Unknown error occurred';\n\nconsole.error('Pipeline Error:', errorMessage);\n\nreturn [{\n  json: {\n    success: false,\n    error: errorMessage,\n    timestamp: new Date().toISOString(),\n    suggestion: 'Check Ollama is running and the model is pulled. Try: docker exec ollama ollama pull llama3.2:3b'\n  }\n}];"
+            },
+            "id": "error-handler",
+            "name": "Error Handler",
+            "type": "n8n-nodes-base.function",
+            "typeVersion": 1,
+            "position": [
+                1200,
+                400
+            ]
+        }
+    ],
+    "connections": {
+        "Demo Call Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Parse Demo Transcript",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Parse Demo Transcript": {
+            "main": [
+                [
+                    {
+                        "node": "Extract Memo (Ollama LLM)",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Extract Memo (Ollama LLM)": {
+            "main": [
+                [
+                    {
+                        "node": "Parse Memo Response",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Parse Memo Response": {
+            "main": [
+                [
+                    {
+                        "node": "Generate Agent Spec (Ollama)",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate Agent Spec (Ollama)": {
+            "main": [
+                [
+                    {
+                        "node": "Parse Spec Response",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Parse Spec Response": {
+            "main": [
+                [
+                    {
+                        "node": "Save v1 Artifacts",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Onboarding Call Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Parse Onboarding Transcript",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Parse Onboarding Transcript": {
+            "main": [
+                [
+                    {
+                        "node": "Load Existing v1 Data",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Load Existing v1 Data": {
+            "main": [
+                [
+                    {
+                        "node": "Update Memo (Ollama LLM)",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Update Memo (Ollama LLM)": {
+            "main": [
+                [
+                    {
+                        "node": "Parse Updated Memo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Parse Updated Memo": {
+            "main": [
+                [
+                    {
+                        "node": "Generate Agent Spec v2 (Ollama)",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate Agent Spec v2 (Ollama)": {
+            "main": [
+                [
+                    {
+                        "node": "Save v2 + Changelog",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {
+        "executionOrder": "v1",
+        "saveManualExecutions": true,
+        "saveExecutionProgress": true
+    },
+    "staticData": null,
+    "tags": [
+        {
+            "name": "clara-answers"
+        },
+        {
+            "name": "automation"
+        }
+    ],
+    "triggerCount": 2,
+    "meta": {
+        "instanceId": "clara-answers-pipeline",
+        "description": "Clara Answers call processing pipeline. Pipeline A processes demo calls (v1). Pipeline B processes onboarding calls (v2 with changelog).",
+        "notes": "Requires: Ollama running with llama3.2:3b model. Mount /data volume for output storage."
+    }
+}

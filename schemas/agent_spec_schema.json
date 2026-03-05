@@ -1,0 +1,21 @@
+{
+    "agent_name": "",
+    "voice_style": "professional, warm, and clear",
+    "system_prompt": "",
+    "key_variables": {
+        "timezone": "",
+        "business_hours": "",
+        "address": "",
+        "emergency_routing": {}
+    },
+    "tool_invocation_placeholders": [],
+    "call_transfer_protocol": {
+        "during_hours": {},
+        "after_hours": {}
+    },
+    "fallback_protocol": {
+        "all_lines_busy": "",
+        "technical_failure": ""
+    },
+    "version": "v1"
+}

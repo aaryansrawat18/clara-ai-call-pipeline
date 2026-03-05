@@ -1,0 +1,47 @@
+ONBOARDING CALL TRANSCRIPT — Hartfield & Associates Law Firm
+Date: 2024-11-24
+Participants: Lisa (Clara Rep), James Hartfield (Managing Partner)
+
+[00:00] Lisa: Mr. Hartfield, great to connect again. Let's finalize your AI phone agent.
+
+[00:05] James: Lisa, hello. I've discussed with my partners and we have some important refinements.
+
+[00:10] Lisa: I'm all ears.
+
+[00:12] James: First, we want to add Saturday hours. Limited — 9 AM to 1 PM. Only existing client matters, no new intake on Saturdays. The AI should inform new callers on Saturday that intake is Monday through Friday only.
+
+[00:26] Lisa: Understood. Service changes?
+
+[00:28] James: We're adding immigration law — we just brought on a new partner, Sofia Martinez, who specializes in it. Also, add class action litigation. Remove estate planning — that partner left the firm.
+
+[00:42] Lisa: Emergency call updates?
+
+[00:44] James: Yes, add one scenario: if a client reports they've received a subpoena and the response deadline is within 48 hours. That needs to be treated as urgent. Also, for client arrests, emphasize that the AI should tell them to say nothing to law enforcement until an attorney contacts them — that's critical legal advice the AI can relay.
+
+[01:08] Lisa: Routing changes?
+
+[01:10] James: After hours, change the priority. Try Rachel first now, not me. She's agreed to be the primary after-hours contact. I'm the backup. Also, add a third fallback: our new partner Sofia. She's willing to take urgent immigration matters after hours specifically.
+
+[01:30] Lisa: That's very specific routing. For immigration matters after hours, Sofia first?
+
+[01:34] James: Exactly. If the caller mentions immigration, visa, deportation, or ICE — route to Sofia's cell first after hours. For everything else, Rachel then me. Good catch.
+
+[01:48] Lisa: Non-emergency changes?
+
+[01:50] James: New client intake — I want the AI to also ask what the approximate accident or incident date was. Helps us quickly assess statute of limitations. For billing questions, change extension to 215 — we moved our billing person. Callback window stays at 4 business hours.
+
+[02:10] Lisa: After-hours messages?
+
+[02:12] James: Same process, but add one thing: for personal injury inquiries, ask if they've already spoken with another attorney or signed a retainer. That's important for conflict checks.
+
+[02:25] Lisa: Integration or software changes?
+
+[02:27] James: We're migrating from Clio to PracticePanther next month. For now, note both — Clio currently, transitioning to PracticePanther. Same future wish: auto-create leads from intake calls.
+
+[02:40] Lisa: Greeting?
+
+[02:42] James: Update to: "Thank you for calling Hartfield and Associates, Chicago's trusted advocates for justice. How may I direct your call?" Slightly more powerful.
+
+[02:55] Lisa: Excellent refinements. Updated spec will be ready within 24 hours.
+
+[02:58] James: Thank you, Lisa. Thorough as always.
