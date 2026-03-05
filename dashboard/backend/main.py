@@ -11,9 +11,13 @@ import traceback
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 from diff_engine import compute_full_diff, find_missing_fields
 
@@ -210,6 +214,49 @@ async def get_changelog(account_id: str):
         return {"account_id": account_id, "changelog": f.read()}
 
 
+@app.delete("/api/accounts/{account_id}")
+async def delete_account(account_id: str):
+    """Delete an entire account. This undoes a demo call."""
+    import shutil
+    account_dir = OUTPUTS_DIR / account_id
+    if not account_dir.exists():
+        raise HTTPException(status_code=404, detail=f"Account {account_id} not found")
+
+    try:
+        shutil.rmtree(account_dir)
+        return {"success": True, "message": f"Account '{account_id}' deleted completely."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete account: {str(e)}")
+
+
+@app.delete("/api/accounts/{account_id}/v2")
+async def revert_onboarding(account_id: str):
+    """Delete v2 data and changelog to revert back to demo state."""
+    import shutil
+    account_dir = OUTPUTS_DIR / account_id
+    if not account_dir.exists():
+        raise HTTPException(status_code=404, detail=f"Account {account_id} not found")
+
+    if not (account_dir / "v2").exists():
+        raise HTTPException(status_code=404, detail=f"No v2 onboarding data found for {account_id}")
+
+    try:
+        # Delete v2 directory
+        shutil.rmtree(account_dir / "v2")
+        
+        # Delete changelog
+        if (account_dir / "changelog.md").exists():
+            os.remove(account_dir / "changelog.md")
+            
+        # Delete task tracker
+        if (account_dir / "task_onboarding.json").exists():
+            os.remove(account_dir / "task_onboarding.json")
+            
+        return {"success": True, "message": f"Account '{account_id}' reverted to v1 initial state."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to revert onboarding: {str(e)}")
+
+
 @app.get("/api/metrics")
 async def get_metrics():
     """Get batch processing metrics."""
@@ -299,6 +346,32 @@ async def process_transcript(req: ProcessRequest):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Processing failed: {str(e)}")
+
+
+@app.post("/api/transcribe")
+async def transcribe_audio_file(file: UploadFile = File(...)):
+    """Transcribe an uploaded audio file using Whisper."""
+    from llm_client import LLMClient
+    
+    try:
+        audio_content = await file.read()
+        if not audio_content:
+            raise HTTPException(status_code=400, detail="Empty audio file")
+            
+        client = LLMClient()
+        if not client.groq_api_key:
+            raise HTTPException(
+                status_code=500, 
+                detail="Groq API key required for audio transcription. Please set GROQ_API_KEY environment variable."
+            )
+            
+        transcript = client.transcribe_audio(audio_content, file.filename)
+        return {"success": True, "text": transcript}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Transcription failed: {str(e)}")
 
 
 if __name__ == "__main__":

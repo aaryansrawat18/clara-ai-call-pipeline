@@ -164,12 +164,13 @@ function DiffItem({ change }) {
 }
 
 // ─── Detail Panel ──────────────────────────────────────────────────
-function DetailPanel({ accountId, onClose }) {
+function DetailPanel({ accountId, onClose, onSuccess }) {
     const [data, setData] = useState(null)
     const [diff, setDiff] = useState(null)
     const [tab, setTab] = useState('overview')
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+    const [actionLoading, setActionLoading] = useState(false)
 
     useEffect(() => {
         setLoading(true)
@@ -214,6 +215,45 @@ function DetailPanel({ accountId, onClose }) {
         </>
     )
 
+    const handleDeleteAccount = async () => {
+        if (!window.confirm(`Are you sure you want to completely delete the account '${accountId}' and all its data? This cannot be undone.`)) return
+
+        setActionLoading(true)
+        try {
+            const res = await fetch(`${API_BASE}/accounts/${accountId}`, { method: 'DELETE' })
+            if (!res.ok) throw new Error('Failed to delete account')
+            onSuccess() // Refresh list
+            onClose() // Close panel
+        } catch (err) {
+            alert(err.message)
+            setActionLoading(false)
+        }
+    }
+
+    const handleRevertOnboarding = async () => {
+        if (!window.confirm(`Are you sure you want to delete the v2 onboarding data for '${accountId}'? This will revert the account back to its initial v1 demo state.`)) return
+
+        setActionLoading(true)
+        try {
+            const res = await fetch(`${API_BASE}/accounts/${accountId}/v2`, { method: 'DELETE' })
+            if (!res.ok) throw new Error('Failed to revert onboarding')
+            onSuccess() // Refresh list
+
+            // Reload this panel
+            setLoading(true)
+            setActionLoading(false)
+            setTab('overview')
+
+            const accountData = await fetchJSON(`/accounts/${accountId}`)
+            setData(accountData)
+            setDiff(null)
+            setLoading(false)
+        } catch (err) {
+            alert(err.message)
+            setActionLoading(false)
+        }
+    }
+
     return (
         <>
             <div className="overlay" onClick={onClose} />
@@ -225,7 +265,29 @@ function DetailPanel({ accountId, onClose }) {
                         </h2>
                         <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'monospace' }}>{accountId}</span>
                     </div>
-                    <button className="close-btn" onClick={onClose}>×</button>
+                    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                        {data?.has_v2 && (
+                            <button
+                                className="upload-btn secondary"
+                                style={{ padding: '6px 12px', fontSize: 12 }}
+                                onClick={handleRevertOnboarding}
+                                disabled={actionLoading}
+                                title="Delete v2 data and changelog"
+                            >
+                                ↩️ Revert to v1
+                            </button>
+                        )}
+                        <button
+                            className="upload-btn"
+                            style={{ padding: '6px 12px', fontSize: 12, background: 'var(--danger-soft)', color: 'var(--danger)', border: '1px solid rgba(239, 68, 68, 0.3)' }}
+                            onClick={handleDeleteAccount}
+                            disabled={actionLoading}
+                            title="Delete all data for this account"
+                        >
+                            🗑️ Delete Account
+                        </button>
+                        <button className="close-btn" onClick={onClose} disabled={actionLoading}>×</button>
+                    </div>
                 </div>
 
                 <div className="panel-content">
@@ -328,6 +390,7 @@ function UploadModal({ accounts, onClose, onSuccess }) {
     const [callType, setCallType] = useState('demo')
     const [accountId, setAccountId] = useState('')
     const [submitting, setSubmitting] = useState(false)
+    const [transcribing, setTranscribing] = useState(false)
     const [result, setResult] = useState(null)
     const [error, setError] = useState(null)
 
@@ -371,6 +434,40 @@ function UploadModal({ accounts, onClose, onSuccess }) {
         const reader = new FileReader()
         reader.onload = (ev) => setTranscript(ev.target.result)
         reader.readAsText(file)
+    }
+
+    const handleAudioUpload = async (e) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        // Reset file input so same file can be selected again
+        e.target.value = ''
+
+        setError(null)
+        setTranscribing(true)
+
+        try {
+            const formData = new FormData()
+            formData.append('file', file)
+
+            const res = await fetch(`${API_BASE}/transcribe`, {
+                method: 'POST',
+                body: formData
+            })
+            const data = await res.json()
+
+            if (!res.ok) {
+                setError(data.detail || 'Audio transcription failed.')
+                setTranscribing(false)
+                return
+            }
+
+            setTranscript(data.text)
+            setTranscribing(false)
+        } catch (err) {
+            setError(err.message)
+            setTranscribing(false)
+        }
     }
 
     return (
@@ -450,17 +547,24 @@ function UploadModal({ accounts, onClose, onSuccess }) {
                             <div className="form-group">
                                 <label style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                     Transcript
-                                    <label className="file-upload-label">
-                                        📁 Upload .txt
-                                        <input type="file" accept=".txt" onChange={handleFileUpload} hidden />
-                                    </label>
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <label className="file-upload-label" style={{ opacity: transcribing ? 0.5 : 1 }}>
+                                            {transcribing ? '🎙️ Transcribing...' : '🎙️ Upload Audio'}
+                                            <input type="file" accept="audio/*" onChange={handleAudioUpload} hidden disabled={transcribing} />
+                                        </label>
+                                        <label className="file-upload-label" style={{ opacity: transcribing ? 0.5 : 1 }}>
+                                            📁 Upload .txt
+                                            <input type="file" accept=".txt" onChange={handleFileUpload} hidden disabled={transcribing} />
+                                        </label>
+                                    </div>
                                 </label>
                                 <textarea
                                     className="form-textarea"
-                                    placeholder={`Paste your ${callType} call transcript here...\n\nExample format:\nDEMO CALL TRANSCRIPT — Company Name\n[00:00] Speaker: Text...`}
+                                    placeholder={`Paste your ${callType} call transcript here...\n\nOr click 'Upload Audio' to transcribe a recording directly using Groq Whisper.`}
                                     value={transcript}
                                     onChange={(e) => setTranscript(e.target.value)}
                                     rows={14}
+                                    disabled={transcribing || submitting}
                                 />
                                 <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>
                                     {transcript ? `${transcript.length.toLocaleString()} characters` : 'No transcript loaded'}
@@ -472,7 +576,7 @@ function UploadModal({ accounts, onClose, onSuccess }) {
                             <button
                                 className="upload-btn"
                                 onClick={handleSubmit}
-                                disabled={submitting || !transcript.trim()}
+                                disabled={submitting || transcribing || !transcript.trim()}
                             >
                                 {submitting ? (
                                     <><div className="spinner" style={{ width: 16, height: 16, borderWidth: 2, marginRight: 8, display: 'inline-block' }} /> Processing...</>
@@ -573,6 +677,7 @@ export default function App() {
                 <DetailPanel
                     accountId={selectedAccount}
                     onClose={() => setSelectedAccount(null)}
+                    onSuccess={loadData}
                 />
             )}
 

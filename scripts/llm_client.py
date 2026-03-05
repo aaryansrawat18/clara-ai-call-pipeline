@@ -122,6 +122,38 @@ class LLMClient:
         # Return empty JSON to signal the processor should use its own extraction.
         return '{"_use_rule_based": true}'
 
+    def transcribe_audio(self, audio_data: bytes, filename: str) -> str:
+        """
+        Transcribe audio using Groq Whisper API (whisper-large-v3-turbo).
+        Returns the transcribed text.
+        """
+        if not self.groq_api_key:
+            raise ValueError("Groq API key required for audio transcription. Please set GROQ_API_KEY environment variable.")
+
+        import httpx
+        
+        try:
+            # We use httpx files parameter for multipart/form-data
+            files = {
+                "file": (filename, audio_data, "audio/mpeg")
+            }
+            data = {
+                "model": "whisper-large-v3-turbo",
+            }
+            
+            resp = httpx.post(
+                "https://api.groq.com/openai/v1/audio/transcriptions",
+                headers={"Authorization": f"Bearer {self.groq_api_key}"},
+                files=files,
+                data=data,
+                timeout=120
+            )
+            resp.raise_for_status()
+            return resp.json().get("text", "")
+        except Exception as e:
+            logger.error(f"Audio transcription failed: {e}")
+            raise Exception(f"Failed to transcribe audio: {str(e)}")
+
 
 def extract_json_from_response(text: str) -> Dict[str, Any]:
     """Extract JSON from LLM response, handling markdown code blocks."""
