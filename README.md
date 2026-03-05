@@ -4,11 +4,8 @@
 
 ---
 
-## 📹 Loom Video Walkthrough
-
-> **[👉 Insert your Loom video link here]**
->
-> _Record a walkthrough showing: (1) running the batch processor, (2) exploring the dashboard, (3) reviewing a diff between v1 and v2._
+## video Demo:
+ https://drive.google.com/drive/folders/1NRh83FRXI4BI9xUa1OU6pSQqF5dvdTEa?usp=sharing
 
 ---
 
